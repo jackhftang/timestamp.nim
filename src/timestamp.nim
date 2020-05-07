@@ -40,7 +40,7 @@ proc initTimestamp*(year, month, day: int, hour=0, minute=0, second=0, milli=0, 
     self += day * DAY
   return Timestamp(self: self)
 
-proc systemTimestamp*(): Timestamp = 
+proc initTimestamp*(): Timestamp = 
   ## Use TimeService.now() for normal timestamp
   when defined(posix):
     var ts: Timespec

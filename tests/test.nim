@@ -8,9 +8,9 @@ suite "timestamp":
     
   test "comparison":
     proc doTest {.async.} =
-      let s = systemTimestamp()
+      let s = initTimestamp()
       await sleepAsync(1)
-      let e = systemTimestamp()
+      let e = initTimestamp()
       check: s < e
       check: s <= e
       check: s == s
@@ -114,3 +114,14 @@ suite "timestamp":
       assert t.nanoSecond == 9
       assert t.subSecond == 7008009
       assert initTimestamp(1970,1,2).daySinceEpoch == 1
+
+    block:
+      let t = initTimestamp(2001,2,3,4,5,6,7,8,9)
+      # human readable time
+      assert $t == "2001-02-03T04:05:06.007008009Z"
+
+      # zulu is provided at milli-second precision same as javascript
+      assert t.zulu == "2001-02-03T04:05:06.007Z"
+
+      # convert to int64
+      assert t.i64 is int64

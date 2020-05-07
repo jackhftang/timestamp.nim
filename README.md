@@ -1,21 +1,21 @@
 # Timestamp.nim 
 
 You may want to use this library if
-- You do not want to obsess with the standard [times](https://nim-lang.org/docs/times.html) library 
-- Your mindset of time is an integer and comfortable with arithmetic operations of time
+- You do not want to obsess with typings in standard [times](https://nim-lang.org/docs/times.html) library.
+- Your mindset of time is an integer and comfortable with arithmetic operations of time.
 - You understand GMT (not UTC) that 1 day equal to 1 rotation of earth and each day has exactly 86400 seconds.
-- You only need a **point-in-time** and do not care representation of time e.g. timezone, daylight saving time
-- You need nano-second precision
-- You want small data structure (8 bytes) and fast operations
-- You are okay with time bound from `1677-09-21T00:12:43.145Z` to `2262-04-11T23:47:16.854Z`
+- You only need a **point-in-time** and do not care representation of time e.g. timezone, daylight saving time.
+- You need nano-second precision and accept its as smallest unit of time.
+- You want small data structure (64-bits) and fast operations.
+- You are okay with time bound from `1677-09-21T00:12:43.145Z` to `2262-04-11T23:47:16.854Z`.
 
 ## Usage
 
 ### Construction 
 
 ```nim
-# from system time
-echo systemTimestamp()
+# from system time (now)
+echo initTimestamp()
 
 # from nano second since epoch time 
 assert $initTimestamp(0) == "1970-01-01T00:00:00.000000000Z"
@@ -27,6 +27,14 @@ assert $initTimestamp(2001,2,3,4) == "2001-02-03T04:00:00.000000000Z"
 assert $initTimestamp(2001,2,3,4,5) == "2001-02-03T04:05:00.000000000Z"
 assert $initTimestamp(2001,2,3,4,5,6) == "2001-02-03T04:05:06.000000000Z"
 assert $initTimestamp(2001,2,3,4,5,6,7,8,9) == "2001-02-03T04:05:06.007008009Z"
+
+# from string
+assert parseZulu("1970-01-01T00:00:00Z") == initTimestamp(0)
+assert parseZulu("1970-01-01T00:00:00.1Z") == initTimestamp(100000000)
+assert parseZulu("1970-01-01T00:00:00.12Z") == initTimestamp(120000000)
+assert parseZulu("1970-01-01T00:00:00.123Z") == initTimestamp(123000000)
+assert parseZulu("1970-01-01T00:00:00.123456Z") == initTimestamp(123456000)
+assert parseZulu("1970-01-01T00:00:00.123456789Z") == initTimestamp(123456789)
 ```
 
 ### Operation 
@@ -81,3 +89,17 @@ assert t.subSecond == 7008009
 assert initTimestamp(1970,1,2).daySinceEpoch == 1
 ```
 
+#### Representation
+
+```nim
+let t = initTimestamp(2001,2,3,4,5,6,7,8,9)
+
+# human readable time
+assert $t == "2001-02-03T04:05:06.007008009Z"
+
+# zulu is provided at milli-second precision same as javascript
+assert t.zulu == "2001-02-03T04:05:06.007Z"
+
+# convert to int64
+assert t.i64 is int64
+```
