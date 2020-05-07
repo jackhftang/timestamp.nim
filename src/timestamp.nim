@@ -69,13 +69,13 @@ proc `-`*(a,b: Timestamp): int64 = a.self - b.self
 proc max*(a,b: Timestamp): Timestamp = Timestamp(self: max(a.self, b.self))
 proc min*(a,b: Timestamp): Timestamp = Timestamp(self: min(a.self, b.self))
 
-proc daySinceEpoch*(t: Timestamp): int64 = floorDiv(t.self, DAY).int
+proc daySinceEpoch*(t: Timestamp): int64 = floorDiv(t.self, DAY).int64
 
 proc convert(t: Timestamp, d, m: int64): int64 {.inline.} =
   var n = floorDiv(t.self, d) mod m
   if n < 0: result = (n + m)
   else: result = n
-proc nanoSecond*(t: Timestamp): int64 = t.self
+proc nanoSecond*(t: Timestamp): int64 = convert(t, NANO_SECOND, 1000)
 proc microSecond*(t: Timestamp): int64 = convert(t, MICRO_SECOND, 1000)
 proc milliSecond*(t: Timestamp): int64 = convert(t, MILLI_SECOND, 1000)
 proc second*(t: Timestamp): int64 = convert(t, SECOND, 60)
