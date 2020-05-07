@@ -1,13 +1,19 @@
 # Timestamp.nim 
 
 You may want to use this library if
-- You do not want to obsess with typings in standard [times](https://nim-lang.org/docs/times.html) library.
+- You are obsessed with typings in standard [times](https://nim-lang.org/docs/times.html) library.
 - You speak in GMT (not UTC) that 1 day equal to 1 rotation of earth and each day has exactly 86400 seconds.
-- You accept nano-second as smallest unit of time.
+- You agree nano-second as smallest unit of time.
 - You think time is an integer and comfortable with arithmetic operations of time.
 - You only need a **point-in-time** and do not care presentation of time e.g. timezone, daylight saving time.
-- You want small data structure (64-bits) and fast operations.
+- You want a small data structure (64-bits) and fast operations.
 - You are okay with time bound from `1677-09-21T00:12:43.145Z` to `2262-04-11T23:47:16.854Z`.
+
+## Installation
+
+```
+$ nimble install timestamp
+```
 
 ## Usage
 
@@ -45,6 +51,8 @@ DAY, HOUR, SECOND, MINUTE... are `const` number of nano-second of type `int64`.
 
 ```nim
 let t = initTimestamp(0)
+
+# DAY, HOUR, MINUTE... are pre-defined constants of int64
 assert $(t + DAY) == "1970-01-02T00:00:00.000000000Z"
 assert $(t + HOUR) == "1970-01-01T01:00:00.000000000Z"
 assert $(t + MINUTE) == "1970-01-01T00:01:00.000000000Z"
@@ -53,10 +61,9 @@ assert $(t + MILLI_SECOND) == "1970-01-01T00:00:00.001000000Z"
 assert $(t + MICRO_SECOND) == "1970-01-01T00:00:00.000001000Z"
 assert $(t + NANO_SECOND) == "1970-01-01T00:00:00.000000001Z"
 assert $(t - NANO_SECOND) == "1969-12-31T23:59:59.999999999Z"
-
-# DAY, HOUR, MINUTE... are int64 in nano second
+assert $(t + 5 * MINUTE) == "1970-01-01T00:00:05.000000000Z"
 assert $(t + 1) == "1970-01-01T00:00:00.000000001Z"
-assert $(t + 5 * MINUTE) == "1970-01-01T00:00:05.000000001Z"
+
 
 # substraction between two timestamps return int64
 let t2 = t + DAY 
@@ -89,17 +96,26 @@ assert t.subSecond == 7008009
 assert initTimestamp(1970,1,2).daySinceEpoch == 1
 ```
 
-#### Representation
+#### Presentation
 
 ```nim
 let t = initTimestamp(2001,2,3,4,5,6,7,8,9)
 
-# human readable time
+# convert to string
 assert $t == "2001-02-03T04:05:06.007008009Z"
 
-# zulu is provided at milli-second precision same as javascript
+# convert to string at milli-second precision (same as javascript getTime)
 assert t.zulu == "2001-02-03T04:05:06.007Z"
 
 # convert to int64
 assert t.i64 is int64
+
+# convert to float
+assert t.inDay is float
+assert t.inHour is float
+assert t.inMinute is float
+assert t.inSecond is float
+assert t.inMilliSecond is float
+assert t.inMicroSecond is float
+assert t.inNanoSecond is float
 ```

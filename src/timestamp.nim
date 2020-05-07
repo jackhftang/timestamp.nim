@@ -20,9 +20,12 @@ type
   Timestamp* = object
     self: int64
 
-proc initTimestamp*(ns: int64): Timestamp = Timestamp(self: ns)
+proc initTimestamp*(ns: int64): Timestamp = 
+  ## create a timestamp with number of nano-second since epoch
+  Timestamp(self: ns)
 
 proc initTimestamp*(year, month, day: int, hour=0, minute=0, second=0, milli=0, micro=0, nano=0): Timestamp =
+  ## create a timestamp with normal written units
   # http://howardhinnant.github.io/date_algorithms.html#days_from_civil
   var y = year.int64
   if month <= 2: y -= 1
@@ -41,7 +44,7 @@ proc initTimestamp*(year, month, day: int, hour=0, minute=0, second=0, milli=0, 
   return Timestamp(self: self)
 
 proc initTimestamp*(): Timestamp = 
-  ## Use TimeService.now() for normal timestamp
+  ## create a timestamp with current system time
   when defined(posix):
     var ts: Timespec
     let success = clock_gettime(CLOCK_REALTIME, ts)
@@ -57,8 +60,6 @@ proc initTimestamp*(): Timestamp =
     result = Timestamp(self: t)
   else:
     {.failed "only windows and posix are supported".}
-
-proc i64*(t: Timestamp): int64 = t.self
 
 proc `==`*(a,b: Timestamp): bool = a.self == b.self
 proc `<`*(a,b: Timestamp): bool = a.self < b.self
@@ -96,7 +97,11 @@ proc yearMonthDay*(t: Timestamp): tuple[year: int, month: int, day: int] =
   let m = mp + (if mp < 10: 3 else: -9)
   return ((y + ord(m <= 2)).int, m.int, d.int)
 
-proc zulu*(t: Timestamp): string = 
+proc i64*(t: Timestamp): int64 = t.self
+
+proc zulu*(t: Timestamp): string =
+  ## Convert timestamp to string with milli-second precision
+  ## Use `$` if you need full (nano-second) precision 
   let (y, m, d) = t.yearMonthDay()
   let yr = ($y).align(4, '0')
   let mo = ($m).align(2, '0')
@@ -119,35 +124,41 @@ proc `$`*(t: Timestamp): string =
   result = &"{yr}-{mo}-{dy}T{hh}:{mm}:{ss}.{ns}Z"
 
 proc parseZulu*(s: string): Timestamp =
-  ## The following format are acceptable
+  ## The following format are accepted
+  ## ```
   ## 2001-02-03T04:05:06Z
   ## 2001-02-03T04:05:06.1Z
   ## 2001-02-03T04:05:06.12Z
   ## 2001-02-03T04:05:06.123Z
   ## 2001-02-03T04:05:06.123456Z
   ## 2001-02-03T04:05:06.123456789Z
-  template check(i,j) =
+  ## ```
+  template checkIsDigit(i,j) =
     for k in i..j:
       if not isDigit(s[k]): 
         raise newException(TimestampInvalidFormatException, "Invalid format: position " & $k & " is not a digit: " & s)
+
+  template checkChar(i, c) =
+    if s[i] != c: 
+      raise newException(TimestampInvalidFormatException, "Invalid format: position " & $i & " is not equal to " & c & ": " & s)
 
   if s.len < 20: 
     raise newException(TimestampInvalidFormatException, "Invalid format: too short: " & s)
   if s.len > 30:
     raise newException(TimestampInvalidFormatException, "Invalid format: too long: " & s)
-  check(0,3)
-  if s[4] != '-': raise newException(TimestampInvalidFormatException, "Invalid format: " & s)
-  check(5,6)
-  if s[7] != '-': raise newException(TimestampInvalidFormatException, "Invalid format: " & s)
-  check(8,9)
-  if s[10] != 'T': raise newException(TimestampInvalidFormatException, "Invalid format: " & s)
-  check(11,12)
-  if s[13] != ':': raise newException(TimestampInvalidFormatException, "Invalid format: " & s)
-  check(14,15)
-  if s[16] != ':': raise newException(TimestampInvalidFormatException, "Invalid format: " & s)
+  checkIsDigit(0,3)
+  checkChar(4,'-')
+  checkIsDigit(5,6)
+  checkChar(7, '-')
+  checkIsDigit(8,9)
+  checkChar(10, 'T')
+  checkIsDigit(11,12)
+  checkChar(13, ':')
+  checkIsDigit(14,15)
+  checkChar(16, ':')
   if s.len > 20: 
-    if s[19] != '.': raise newException(TimestampInvalidFormatException, "Invalid format: " & s)
-    check(20,s.len-2)
+    checkChar(19, '.')
+    checkIsDigit(20,s.len-2)
   if s[^1] != 'Z': raise newException(TimestampInvalidFormatException, "Invalid format: missing Z: " & s)
 
   # http://howardhinnant.github.io/date_algorithms.html#civil_from_days
@@ -179,3 +190,4 @@ proc inMinute*(t: Timestamp): float = t.self.float / MINUTE.float
 proc inSecond*(t: Timestamp): float = t.self.float / SECOND.float
 proc inMilliSecond*(t: Timestamp): float = t.self.float / MILLI_SECOND.float
 proc inMicroSecond*(t: Timestamp): float = t.self.float / MICRO_SECOND.float
+proc inNanoSecond*(t: Timestamp): float = t.self.float
