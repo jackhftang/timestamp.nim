@@ -9,7 +9,7 @@
     "timeout": 0
   },
   "hooks": {
-    "after:init": [
+    "after:bump": [
       "nimble version ${version}",
       "nimble docgen"
     ]
