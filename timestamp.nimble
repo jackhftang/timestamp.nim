@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.1.0"
+version       = "0.1.1"
 author        = "Jack Tang"
 description   = "An alternative time library"
 license       = "MIT"
@@ -10,7 +10,7 @@ srcDir        = "src"
 requires "nim >= 1.0.0"
 
 proc updateNimbleVersion(ver: string) =
-  let fname = "lrucache.nimble"
+  let fname = "timestamp.nimble"
   let txt = readFile(fname)
   var lines = txt.split("\n")
   for i, line in lines:
