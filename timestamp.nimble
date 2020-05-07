@@ -2,7 +2,7 @@
 
 version       = "0.1.0"
 author        = "Jack Tang"
-description   = "Alternative time library"
+description   = "An alternative time library"
 license       = "MIT"
 srcDir        = "src"
 # Dependencies
