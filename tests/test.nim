@@ -87,6 +87,13 @@ suite "timestamp":
       assert $(t + MILLI_SECOND) == "1970-01-01T00:00:00.001000000Z"
       assert $(t + MICRO_SECOND) == "1970-01-01T00:00:00.000001000Z"
       assert $(t + NANO_SECOND) == "1970-01-01T00:00:00.000000001Z"
+      assert $(t - NANO_SECOND) == "1969-12-31T23:59:59.999999999Z"
+      
+      assert $(t + 1) == "1970-01-01T00:00:00.000000001Z"
+      assert $(t + 5*MINUTE + 30*SECOND) == "1970-01-01T00:05:30.000000000Z"
+
+      let t2 = t + DAY 
+      assert t2 - t == 86400 * SECOND
 
     block:
       let a = initTimestamp(0)

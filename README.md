@@ -1,13 +1,13 @@
 # Timestamp.nim 
 
 You may want to use this library if
-- You do not want to obsess with the standard (times)[https://nim-lang.org/docs/times.html] library 
+- You do not want to obsess with the standard [times](https://nim-lang.org/docs/times.html) library 
 - Your mindset of time is an integer and comfortable with arithmetic operations of time
-- You understand GMT (not UTC) and that 1 day equal to 1 rotation of earth and each day has exactly 86400 seconds.
-- You only need *a point-in-time* and do not care representation of time e.g. timezone, daylight saving time
-- You need nano-second precision p
-- You want small data size (8 bytes) and fast operations
-- You are okay with time range from 1677-09-21T00:12:43.145Z to 2262-04-11T23:47:16.854Z
+- You understand GMT (not UTC) that 1 day equal to 1 rotation of earth and each day has exactly 86400 seconds.
+- You only need a **point-in-time** and do not care representation of time e.g. timezone, daylight saving time
+- You need nano-second precision
+- You want small data structure (8 bytes) and fast operations
+- You are okay with time bound from `1677-09-21T00:12:43.145Z` to `2262-04-11T23:47:16.854Z`
 
 ## Usage
 
@@ -32,6 +32,8 @@ assert $initTimestamp(2001,2,3,4,5,6,7,8,9) == "2001-02-03T04:05:06.007008009Z"
 ### Operation 
 
 `+`, `-` return a new timestamp.
+DAY, HOUR, SECOND, MINUTE... are `const` number of nano-second of type `int64`. 
+
 
 ```nim
 let t = initTimestamp(0)
@@ -42,6 +44,15 @@ assert $(t + SECOND) == "1970-01-01T00:00:01.000000000Z"
 assert $(t + MILLI_SECOND) == "1970-01-01T00:00:00.001000000Z"
 assert $(t + MICRO_SECOND) == "1970-01-01T00:00:00.000001000Z"
 assert $(t + NANO_SECOND) == "1970-01-01T00:00:00.000000001Z"
+assert $(t - NANO_SECOND) == "1969-12-31T23:59:59.999999999Z"
+
+# DAY, HOUR, MINUTE... are int64 in nano second
+assert $(t + 1) == "1970-01-01T00:00:00.000000001Z"
+assert $(t + 5 * MINUTE) == "1970-01-01T00:00:05.000000001Z"
+
+# substraction between two timestamps return int64
+let t2 = t + DAY 
+assert t2 - t == 86400 * SECOND
 ```
 
 #### Comparison 
@@ -67,6 +78,6 @@ assert t.milliSecond == 7
 assert t.microSecond == 8
 assert t.nanoSecond == 9
 assert t.subSecond == 7008009
-assert t.daySinceEpoch == 11356
+assert initTimestamp(1970,1,2).daySinceEpoch == 1
 ```
 
