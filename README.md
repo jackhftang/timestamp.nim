@@ -70,7 +70,7 @@ let t2 = t + DAY
 assert t2 - t == 86400 * SECOND
 ```
 
-#### Comparison 
+### Comparison 
 
 ```nim
 let a = initTimestamp(0)
@@ -81,7 +81,7 @@ assert max(a,b) == b
 assert min(a,b) == a
 ```
 
-#### Extraction 
+### Extraction 
 
 ```nim
 let t = initTimestamp(2001,2,3,4,5,6,7,8,9)
@@ -96,7 +96,7 @@ assert t.subSecond == 7008009
 assert initTimestamp(1970,1,2).daySinceEpoch == 1
 ```
 
-#### Presentation
+### Presentation
 
 ```nim
 let t = initTimestamp(2001,2,3,4,5,6,7,8,9)
