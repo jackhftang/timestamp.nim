@@ -119,3 +119,7 @@ assert t.inMilliSecond is float
 assert t.inMicroSecond is float
 assert t.inNanoSecond is float
 ```
+
+## API
+
+see [here](https://jackhftang.github.io/timestamp.nim/)
