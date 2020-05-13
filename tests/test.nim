@@ -1,4 +1,4 @@
-import unittest, asyncdispatch
+import unittest, asyncdispatch, times, random
 import timestamp
 
 suite "timestamp":
@@ -67,6 +67,35 @@ suite "timestamp":
     check: $initTimestamp(int64.high) == "2262-04-11T23:47:16.854775807Z"
     check: $initTimestamp(int64.low) == "1677-09-21T00:12:43.145224192Z"
     
+  test "toTime":
+    var tc = @[0'i64, 1, -1]
+    for i in 1..1000: 
+      let n = rand(2'i64 .. int64.high)
+      tc.add n
+      tc.add -n
+
+    for n in tc:
+      let ts = initTimestamp(n)
+      let time = ts.toTime
+      check: time.nanoSecond == ts.subsecond
+      check: time == ts.toDateTime.toTime
+
+  test "toDateTime":
+    var tc = @[0'i64, 1, -1]
+    for i in 1..1000: 
+      let n = rand(2'i64 .. int64.high)
+      tc.add n
+      tc.add -n
+
+    for n in tc:
+      let ts = initTimestamp(n)
+      let s0 = $ts
+      var s1 = ts.toDateTime().format("yyyy-MM-dd HH:mm:ss fffffffff")
+      s1[10] = 'T'
+      s1[19] = '.'
+      s1 &= 'Z'
+      check: s0 == s1
+
   test "example on readme":
     block:
       assert $initTimestamp(0) == "1970-01-01T00:00:00.000000000Z"
@@ -125,3 +154,5 @@ suite "timestamp":
 
       # convert to int64
       assert t.i64 is int64
+
+      assert t.toDateTime == initDateTime(3, mFeb, 2001, 4, 5, 6, 7008009, utc())

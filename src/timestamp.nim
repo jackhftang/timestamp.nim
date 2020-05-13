@@ -1,4 +1,4 @@
-import strutils, strformat, math
+import strutils, strformat, math, times
 when defined(posix):
   import posix
 elif defined(windows):
@@ -191,3 +191,12 @@ proc inSecond*(t: Timestamp): float = t.self.float / SECOND.float
 proc inMilliSecond*(t: Timestamp): float = t.self.float / MILLI_SECOND.float
 proc inMicroSecond*(t: Timestamp): float = t.self.float / MICRO_SECOND.float
 proc inNanoSecond*(t: Timestamp): float = t.self.float
+
+proc toTime*(t: Timestamp): times.Time =
+  let sub = t.subSecond
+  let sec = (t.self - sub) div SECOND
+  initTime(sec, sub)
+  
+proc toDateTime*(t: Timestamp): DateTime =
+  let (year, month, day) = t.yearMonthDay
+  initDateTime(day, month.Month, year, t.hour, t.minute, t.second, t.subSecond, utc())

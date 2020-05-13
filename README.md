@@ -9,6 +9,8 @@ You may want to use this library if
 - You want a small data structure (64-bits) and fast operations.
 - You are okay with time bound from `1677-09-21T00:12:43.145Z` to `2262-04-11T23:47:16.854Z`.
 
+*NOTE: JS backend is NOT supported.*
+
 ## Installation
 
 ```
@@ -104,7 +106,7 @@ let t = initTimestamp(2001,2,3,4,5,6,7,8,9)
 # convert to string
 assert $t == "2001-02-03T04:05:06.007008009Z"
 
-# convert to string at milli-second precision (same as javascript getTime)
+# convert to string at milli-second precision (same as javascript toISOString())
 assert t.zulu == "2001-02-03T04:05:06.007Z"
 
 # convert to int64
@@ -118,6 +120,12 @@ assert t.inSecond is float
 assert t.inMilliSecond is float
 assert t.inMicroSecond is float
 assert t.inNanoSecond is float
+
+# convert to DateTime 
+assert t.toDateTime == initDateTime(3, mFeb, 2001, 4, 5, 6, 7008009, utc())
+
+# convert to Time
+assert t.toTime == t.toDateTime.toTime
 ```
 
 ## API
