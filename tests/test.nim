@@ -96,6 +96,26 @@ suite "timestamp":
       s1 &= 'Z'
       check: s0 == s1
 
+  test "Time to Timestamp":
+    var tc = @[0'i64, 1, -1]
+    for i in 1..1000: 
+      let n = rand(2'i64 .. int64.high)
+      tc.add n
+      tc.add -n
+    for n in tc:
+      let ts = initTimestamp(n)
+      check: ts == ts.toTime.toTimestamp
+
+  test "DateTime to Timestamp":
+    var tc = @[0'i64, 1, -1]
+    for i in 1..1000: 
+      let n = rand(2'i64 .. int64.high)
+      tc.add n
+      tc.add -n
+    for n in tc:
+      let ts = initTimestamp(n)
+      check: ts == ts.toDateTime.toTimestamp
+
   test "example on readme":
     block:
       assert $initTimestamp(0) == "1970-01-01T00:00:00.000000000Z"
@@ -106,6 +126,9 @@ suite "timestamp":
       assert $initTimestamp(2001,2,3,4,5) == "2001-02-03T04:05:00.000000000Z"
       assert $initTimestamp(2001,2,3,4,5,6) == "2001-02-03T04:05:06.000000000Z"
       assert $initTimestamp(2001,2,3,4,5,6,7,8,9) == "2001-02-03T04:05:06.007008009Z"
+
+      assert getTime().toTimestamp is Timestamp
+      assert now().toTimestamp is Timestamp
 
     block:
       let t = initTimestamp(0)

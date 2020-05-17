@@ -1,15 +1,14 @@
 # Timestamp.nim 
 
 You may want to use this library if
-- You are obsessed with typings in standard [times](https://nim-lang.org/docs/times.html) library.
+- You are confused with typings in standard [times](https://nim-lang.org/docs/times.html) library.
 - You speak in GMT (not UTC) that 1 day equal to 1 rotation of earth and each day has exactly 86400 seconds.
 - You agree nano-second as smallest unit of time.
 - You think time is an integer and comfortable with arithmetic operations of time.
 - You only need a **point-in-time** and do not care presentation of time e.g. timezone, daylight saving time.
 - You want a small data structure (64-bits) and fast operations.
-- You are okay with time bound from `1677-09-21T00:12:43.145Z` to `2262-04-11T23:47:16.854Z`.
-
-*NOTE: JS backend is NOT supported.*
+- Your use case is fine with time bound from `1677-09-21T00:12:43.145Z` to `2262-04-11T23:47:16.854Z`.
+- Your application do *NOT* compile to JS backend.
 
 ## Installation
 
@@ -43,6 +42,10 @@ assert parseZulu("1970-01-01T00:00:00.12Z") == initTimestamp(120000000)
 assert parseZulu("1970-01-01T00:00:00.123Z") == initTimestamp(123000000)
 assert parseZulu("1970-01-01T00:00:00.123456Z") == initTimestamp(123456000)
 assert parseZulu("1970-01-01T00:00:00.123456789Z") == initTimestamp(123456789)
+
+# from Time
+assert getTime().toTimestamp is Timestamp
+assert now().toTimestamp is Timestamp
 ```
 
 ### Operation 
