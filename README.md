@@ -1,14 +1,17 @@
 # Timestamp.nim 
 
-You may want to use this library if
-- You are confused with typings in standard [times](https://nim-lang.org/docs/times.html) library.
+You may want to use this library if:
+
+- You want a small data structure (int64) and very fast operations on them. e.g. Time-series data procesing
 - You speak in GMT (not UTC) that 1 day equal to 1 rotation of earth and each day has exactly 86400 seconds.
-- You agree nano-second as smallest unit of time.
-- You think time is an integer and comfortable with arithmetic operations of time.
-- You only need a **point-in-time** and do not care presentation of time e.g. timezone, daylight saving time.
-- You want a small data structure (64-bits) and fast operations.
-- Your use case is fine with time bound from `1677-09-21T00:12:43.145Z` to `2262-04-11T23:47:16.854Z`.
-- Your application do *NOT* compile to JS backend.
+- You are comfortable with arthmetic with time.
+
+Limitations and this libray may not for you:
+
+- Your use case beyond time bound from `1677-09-21T00:12:43.145Z` to `2262-04-11T23:47:16.854Z`
+- You need to compile to JS backend
+- You need smaller than nano-second precision.
+- You have complex requirement of presentation of time e.g. timezone, daylight saving time.
 
 ## Installation
 
@@ -21,7 +24,7 @@ $ nimble install timestamp
 ### Construction 
 
 ```nim
-# from system time (now)
+# from system real time (now)
 echo initTimestamp()
 
 # from nano second since epoch time 
@@ -50,14 +53,14 @@ assert now().toTimestamp is Timestamp
 
 ### Operation 
 
-`+`, `-` return a new timestamp.
-DAY, HOUR, SECOND, MINUTE... are `const` number of nano-second of type `int64`. 
 
+DAY, HOUR, SECOND, MINUTE, MILLI_SECOND, MICRO_SECOND, NANO_SECOND are 7 predefined `Timespan`
+Timestamp `+`/`-` Timespan return another timestamp.
 
 ```nim
 let t = initTimestamp(0)
 
-# DAY, HOUR, MINUTE... are pre-defined constants of int64
+# DAY, HOUR, MINUTE... are pre-defined constants of `Timespan`
 assert $(t + DAY) == "1970-01-02T00:00:00.000000000Z"
 assert $(t + HOUR) == "1970-01-01T01:00:00.000000000Z"
 assert $(t + MINUTE) == "1970-01-01T00:01:00.000000000Z"
@@ -67,10 +70,8 @@ assert $(t + MICRO_SECOND) == "1970-01-01T00:00:00.000001000Z"
 assert $(t + NANO_SECOND) == "1970-01-01T00:00:00.000000001Z"
 assert $(t - NANO_SECOND) == "1969-12-31T23:59:59.999999999Z"
 assert $(t + 5 * MINUTE) == "1970-01-01T00:00:05.000000000Z"
-assert $(t + 1) == "1970-01-01T00:00:00.000000001Z"
 
-
-# substraction between two timestamps return int64
+# substraction between two timestamps return Timespan
 let t2 = t + DAY 
 assert t2 - t == 86400 * SECOND
 ```
@@ -105,31 +106,37 @@ assert initTimestamp(1970,1,2).daySinceEpoch == 1
 
 ```nim
 let t = initTimestamp(2001,2,3,4,5,6,7,8,9)
+let t0 = initTimespan(0)
 
-# convert to string
+# convert Timestamp to string
 assert $t == "2001-02-03T04:05:06.007008009Z"
 
-# convert to string at milli-second precision (same as javascript toISOString())
+# convert Timestamp to string at milli-second precision (same as javascript toISOString())
 assert t.zulu == "2001-02-03T04:05:06.007Z"
 
-# convert to int64
+# convert Timestamp to int64
 assert t.i64 is int64
 
-# convert to float
-assert t.inDay is float
-assert t.inHour is float
-assert t.inMinute is float
-assert t.inSecond is float
-assert t.inMilliSecond is float
-assert t.inMicroSecond is float
-assert t.inNanoSecond is float
-
-# convert to DateTime 
+# convert Timestamp to DateTime 
 assert t.toDateTime == initDateTime(3, mFeb, 2001, 4, 5, 6, 7008009, utc())
 
-# convert to Time
+# convert Timestamp to Time
 assert t.toTime == t.toDateTime.toTime
+
+# convert Timespan to int64
+assert (t - t0).i64 is int64
+
+# convert Timespan to float
+assert (t - t0).inDay is float
+assert (t - t0).inHour is float
+assert (t - t0).inMinute is float
+assert (t - t0).inSecond is float
+assert (t - t0).inMilliSecond is float
+assert (t - t0).inMicroSecond is float
+assert (t - t0).inNanoSecond is float
 ```
+
+
 
 ## API
 
