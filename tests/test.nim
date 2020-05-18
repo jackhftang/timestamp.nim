@@ -5,6 +5,9 @@ suite "timestamp":
 
   test "sizeof(Timestamp)":
     check: sizeof(Timestamp) == 8
+  
+  test "sizeof(Timespan)":
+    check: sizeof(Timespan) == 8
     
   test "comparison":
     proc doTest {.async.} =
@@ -116,6 +119,16 @@ suite "timestamp":
       let ts = initTimestamp(n)
       check: ts == ts.toDateTime.toTimestamp
 
+  test "inXXX":
+    let s1 = Timespan(1_000_000_000)
+    assert s1.inNanoSecond == 1e9
+    assert s1.inMicroSecond == 1e6
+    assert s1.inMilliSecond == 1e3
+    assert s1.inSecond == 1.0
+
+    let s2 = Timespan(60_000_000_000)
+    assert s2.inMinute == 1.0
+
   test "example on readme":
     block:
       assert $initTimestamp(0) == "1970-01-01T00:00:00.000000000Z"
@@ -141,7 +154,7 @@ suite "timestamp":
       assert $(t + NANO_SECOND) == "1970-01-01T00:00:00.000000001Z"
       assert $(t - NANO_SECOND) == "1969-12-31T23:59:59.999999999Z"
       
-      assert $(t + 1) == "1970-01-01T00:00:00.000000001Z"
+      assert $(t + 1*NANO_SECOND) == "1970-01-01T00:00:00.000000001Z"
       assert $(t + 5*MINUTE + 30*SECOND) == "1970-01-01T00:05:30.000000000Z"
 
       let t2 = t + DAY 
