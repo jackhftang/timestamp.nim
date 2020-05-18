@@ -57,9 +57,6 @@ proc initTimestamp*(ns: int64): Timestamp =
   ## create a timestamp with number of nano-second since epoch
   Timestamp(ns)
 
-proc initTimestamp*(span: Timespan): Timestamp =
-  initTimestamp(span.int64)
-
 proc initTimestamp*(year, month, day: int, hour=0, minute=0, second=0, milli=0, micro=0, nano=0): Timestamp =
   ## create a timestamp with normal written units
   # http://howardhinnant.github.io/date_algorithms.html#days_from_civil

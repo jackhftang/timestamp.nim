@@ -29,9 +29,11 @@ echo initTimestamp()
 
 # from nano second since epoch time 
 assert $initTimestamp(0) == "1970-01-01T00:00:00.000000000Z"
-assert $initTimestamp(2 * DAY) == "1970-01-03T00:00:00.000000000Z"
 
-# from year, month, day...
+# from Timestamp + Timespan
+assert $(Timestamp(0) + 2 * DAY) == "1970-01-03T00:00:00.000000000Z"
+
+# from year, month, day, hour, minute, second, milli-second, micro-second, nano-second
 assert $initTimestamp(2001,2,3) == "2001-02-03T00:00:00.000000000Z"
 assert $initTimestamp(2001,2,3,4) == "2001-02-03T04:00:00.000000000Z"
 assert $initTimestamp(2001,2,3,4,5) == "2001-02-03T04:05:00.000000000Z"
