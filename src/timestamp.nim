@@ -10,19 +10,21 @@ type
   TimestampInvalidFormatException* = object of TimestampException
   TimestampOutOfRangeException* = object of TimestampException
   Timespan* = distinct int64
-  Timestamp* = distinct int64
+  Timestamp* = object
+    self: int64
 
 proc i64*(span: Timespan): int64 {.inline.} = 
   ## Convert to number of nano-second
   span.int64
 proc i64*(stamp: Timestamp): int64 = 
   ## Convert to number of nano-second since epoch time in int64
-  stamp.int64
+  stamp.self
 
 proc `==`*(a,b: Timespan): bool {.borrow.}
 proc `<`*(a,b: Timespan): bool {.borrow.}
 proc `<=`*(a,b: Timespan): bool {.borrow.}
 proc `*`*[T: SomeInteger](n: T, span: Timespan): Timespan {.inline.} = Timespan(n.int64 * span.int64)
+proc `div`*[T: SomeInteger](span: Timespan, n: T) {.inline.} = Timespan(span.int64 div n.int64)
 proc `+`*(a, b: Timespan): Timespan {.inline.} = Timespan(a.int64 + b.int64)
 proc `-`*(a, b: Timespan): Timespan {.inline.} = Timespan(a.int64 - b.int64)
 let NANO_SECOND* = 1.Timespan
@@ -33,13 +35,19 @@ let MINUTE* = 60 * SECOND
 let HOUR* = 60 * MINUTE
 let DAY* = 24 * HOUR
 
+proc `==`*(a,b: Timestamp): bool = a.self == b.self
+proc `<`*(a,b: Timestamp): bool = a.self < b.self
+proc `<=`*(a,b: Timestamp): bool = a.self <= b.self
+proc max*(a,b: Timestamp): Timestamp = Timestamp(self: max(a.self, b.self))
+proc min*(a,b: Timestamp): Timestamp = Timestamp(self: min(a.self, b.self))
+
 proc systemRealTime*(): Timestamp = 
   ## create a timestamp with current system time
   when defined(posix):
     var ts: Timespec
     let success = clock_gettime(CLOCK_REALTIME, ts)
     if success != 0: raise newException(TimestampException, "clock_gettime failed")
-    result = Timestamp(ts.tv_sec.int64 * 1_000_000_000 + ts.tv_nsec.int64)
+    result = Timestamp(self: ts.tv_sec.int64 * 1_000_000_000 + ts.tv_nsec.int64)
   elif defined(windows):
     var f: FILETIME
     getSystemTimeAsFileTime(f)
@@ -55,7 +63,7 @@ proc initTimestamp*(): Timestamp {.inline.} = systemRealTime()
 
 proc initTimestamp*(ns: int64): Timestamp = 
   ## create a timestamp with number of nano-second since epoch
-  Timestamp(ns)
+  Timestamp(self: ns)
 
 proc initTimestamp*(year, month, day: int, hour=0, minute=0, second=0, milli=0, micro=0, nano=0): Timestamp =
   ## create a timestamp with normal written units
@@ -74,22 +82,16 @@ proc initTimestamp*(year, month, day: int, hour=0, minute=0, second=0, milli=0, 
     span = span - DAY
   else:
     span = span + day * DAY
-  return Timestamp(span.int64)
+  return Timestamp(self: span.int64)
 
-proc `==`*(a,b: Timestamp): bool {.borrow.}
-proc `<`*(a,b: Timestamp): bool {.borrow.}
-proc `<=`*(a,b: Timestamp): bool {.borrow.}
-proc max*(a,b: Timestamp): Timestamp = Timestamp(max(a.int64, b.int64))
-proc min*(a,b: Timestamp): Timestamp = Timestamp(min(a.int64, b.int64))
+proc `+`*(a: Timestamp, ns: Timespan): Timestamp {.inline.} = Timestamp(self: a.self + ns.int64)
+proc `-`*(a: Timestamp, ns: Timespan): Timestamp {.inline.} = Timestamp(self: a.self - ns.int64)
+proc `-`*(a,b: Timestamp): Timespan = Timespan(a.self - b.self)
 
-proc `+`*(a: Timestamp, ns: Timespan): Timestamp = Timestamp(a.int64 + ns.int64)
-proc `-`*(a: Timestamp, ns: Timespan): Timestamp = Timestamp(a.int64 - ns.int64)
-proc `-`*(a,b: Timestamp): Timespan = Timespan(a.int64 - b.int64)
-
-proc daySinceEpoch*(t: Timestamp): int64 = floorDiv(t.int64, DAY.int64).int64
+proc daySinceEpoch*(t: Timestamp): int64 = floorDiv(t.self, DAY.int64).int64
 
 proc convert(t: Timestamp, d: Timespan, m: int64): int64 {.inline.} =
-  var n = floorDiv(t.int64, d.int64) mod m
+  var n = floorDiv(t.self, d.int64) mod m
   if n < 0: result = (n + m)
   else: result = n
 proc nanoSecond*(t: Timestamp): int64 = 
@@ -215,7 +217,7 @@ proc parseZulu*(s: string): Timestamp =
   t += parseInt(s[17..18]) * SECOND.int64
   if s.len > 20:
     t += parseInt(s[20..s.len-2]) * 10^(30 - s.len)
-  result = Timestamp(t)
+  result = Timestamp(self: t)
 
 proc inDay*(t: Timespan): float = 
   ## Number of day since epoch time.
@@ -242,7 +244,7 @@ proc inNanoSecond*(t: Timespan): float =
 proc toTime*(t: Timestamp): Time =
   ## Convert Timestamp to Time
   let sub = t.subSecond
-  let sec = (t.int64 - sub) div SECOND.int64
+  let sec = (t.self - sub) div SECOND.int64
   initTime(sec, sub)
   
 proc toDateTime*(t: Timestamp): DateTime =

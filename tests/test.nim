@@ -132,7 +132,7 @@ suite "timestamp":
   test "example on readme":
     block:
       assert $initTimestamp(0) == "1970-01-01T00:00:00.000000000Z"
-      assert $(Timestamp(0) + 2 * DAY) == "1970-01-03T00:00:00.000000000Z"
+      assert $(initTimestamp(0) + 2 * DAY) == "1970-01-03T00:00:00.000000000Z"
 
       assert $initTimestamp(2001,2,3) == "2001-02-03T00:00:00.000000000Z"
       assert $initTimestamp(2001,2,3,4) == "2001-02-03T04:00:00.000000000Z"
@@ -142,6 +142,10 @@ suite "timestamp":
 
       assert getTime().toTimestamp is Timestamp
       assert now().toTimestamp is Timestamp
+
+    block:
+      assert SECOND == 1000 * MILLI_SECOND
+      assert 2 * DAY == 40 * HOUR + 480 * MINUTE
 
     block:
       let t = initTimestamp(0)

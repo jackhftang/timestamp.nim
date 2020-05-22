@@ -4,13 +4,13 @@ You may want to use this library if:
 
 - You want a small data structure (int64) and very fast operations on them. e.g. Time-series data procesing
 - You speak in GMT (not UTC) that 1 day equal to 1 rotation of earth and each day has exactly 86400 seconds.
-- You are comfortable with arthmetic with time.
+- You agree nano-second as smallest unit of time.
+- You are comfortable with arthmetic-style with time.
 
 Limitations and this libray may not for you:
 
 - Your use case beyond time bound from `1677-09-21T00:12:43.145Z` to `2262-04-11T23:47:16.854Z`
 - You need to compile to JS backend
-- You need smaller than nano-second precision.
 - You have complex requirement of presentation of time e.g. timezone, daylight saving time.
 
 ## Installation
@@ -21,7 +21,14 @@ $ nimble install timestamp
 
 ## Usage
 
+There are two types, both are `int64` internally.
+
+`Timespan`: number of nano-second
+`Timestamp`: number of nano-second since epoch time
+
 ### Construction 
+
+#### Constrution of Timestamp
 
 ```nim
 # from system real time (now)
@@ -50,14 +57,25 @@ assert parseZulu("1970-01-01T00:00:00.123456789Z") == initTimestamp(123456789)
 
 # from Time
 assert getTime().toTimestamp is Timestamp
+
+# from DateTime
 assert now().toTimestamp is Timestamp
 ```
 
+#### Construction of Timespan
+
+```nim
+# from basis
+assert SECOND == 1000 * MILLI_SECOND
+assert MICRO_SECOND == 1000 * NANO_SECOND
+assert 2 * DAY == 40 * HOUR + 480 * MINUTE
+
+
+# from int64
+assert Timestamp(1_000_000_000) == SECOND
+```
+
 ### Operation 
-
-
-DAY, HOUR, SECOND, MINUTE, MILLI_SECOND, MICRO_SECOND, NANO_SECOND are 7 predefined `Timespan`
-Timestamp `+`/`-` Timespan return another timestamp.
 
 ```nim
 let t = initTimestamp(0)
@@ -137,8 +155,6 @@ assert (t - t0).inMilliSecond is float
 assert (t - t0).inMicroSecond is float
 assert (t - t0).inNanoSecond is float
 ```
-
-
 
 ## API
 
