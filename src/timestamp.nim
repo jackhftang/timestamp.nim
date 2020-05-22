@@ -88,6 +88,7 @@ proc `+`*(a: Timestamp, ns: Timespan): Timestamp {.inline.} = Timestamp(self: a.
 proc `-`*(a: Timestamp, ns: Timespan): Timestamp {.inline.} = Timestamp(self: a.self - ns.int64)
 proc `-`*(a,b: Timestamp): Timespan = Timespan(a.self - b.self)
 
+proc epoch*(t: Timestamp): float = t.self.float / 1_000_000_000.0
 proc daySinceEpoch*(t: Timestamp): int64 = floorDiv(t.self, DAY.int64).int64
 
 proc convert(t: Timestamp, d: Timespan, m: int64): int64 {.inline.} =
