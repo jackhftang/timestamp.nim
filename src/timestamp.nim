@@ -1,9 +1,9 @@
 import strutils, strformat, math, times
 when defined(posix):
-  import posix except Time
+  from posix import Timespec, clock_gettime, CLOCK_REALTIME
 elif defined(windows):
-  import winlean, std/time_t  
-
+  from winlean import FILETIME, getSystemTimeAsFileTime
+  
 # nano second since epoch time in GMT
 type
   TimestampException = object of CatchableError
