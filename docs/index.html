@@ -178,6 +178,8 @@ function main() {
     title="`-`(a: Timestamp; ns: Timespan): Timestamp"><wbr />`-`<span class="attachedType">Timestamp</span></a></li>
   <li><a class="reference" href="#-%2CTimestamp%2CTimestamp"
     title="`-`(a, b: Timestamp): Timespan"><wbr />`-`<span class="attachedType">Timestamp</span></a></li>
+  <li><a class="reference" href="#epoch%2CTimestamp"
+    title="epoch(t: Timestamp): float"><wbr />epoch<span class="attachedType">Timestamp</span></a></li>
   <li><a class="reference" href="#daySinceEpoch%2CTimestamp"
     title="daySinceEpoch(t: Timestamp): int64"><wbr />day<wbr />Since<wbr />Epoch<span class="attachedType">Timestamp</span></a></li>
   <li><a class="reference" href="#nanoSecond%2CTimestamp"
@@ -475,6 +477,13 @@ create a timestamp with normal written units
 
 
 </dd>
+<a id="epoch,Timestamp"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#epoch%2CTimestamp"><span class="Identifier">epoch</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
 <a id="daySinceEpoch,Timestamp"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#daySinceEpoch%2CTimestamp"><span class="Identifier">daySinceEpoch</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int64</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
@@ -657,7 +666,7 @@ Convert DateTime to Timestamp can use between
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-05-22 15:11:24 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-05-22 15:19:21 UTC</small>
       </div>
     </div>
   </div>

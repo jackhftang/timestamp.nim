@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.2.2"
+version       = "0.2.3"
 author        = "Jack Tang"
 description   = "An alternative time library"
 license       = "MIT"
