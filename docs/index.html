@@ -100,10 +100,16 @@ function main() {
 <li>
   <a class="reference reference-toplevel" href="#7" id="57">Types</a>
   <ul class="simple simple-toc-section">
-      <li><a class="reference" href="#TimestampInvalidFormatException"
-    title="TimestampInvalidFormatException = object of TimestampException"><wbr />Timestamp<wbr />Invalid<wbr />Format<wbr />Exception<span class="attachedType"></span></a></li>
-  <li><a class="reference" href="#TimestampOutOfRangeException"
-    title="TimestampOutOfRangeException = object of TimestampException"><wbr />Timestamp<wbr />Out<wbr />Of<wbr />Range<wbr />Exception<span class="attachedType"></span></a></li>
+      <li><a class="reference" href="#TimestampError"
+    title="TimestampError = object of CatchableError"><wbr />Timestamp<wbr />Error<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#TimestampInvalidFormatError"
+    title="TimestampInvalidFormatError = object of TimestampError"><wbr />Timestamp<wbr />Invalid<wbr />Format<wbr />Error<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#TimestampOutOfRangeError"
+    title="TimestampOutOfRangeError = object of TimestampError"><wbr />Timestamp<wbr />Out<wbr />Of<wbr />Range<wbr />Error<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#TimespanError"
+    title="TimespanError = object of CatchableError"><wbr />Timespan<wbr />Error<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#TimespanInvalidFormatError"
+    title="TimespanInvalidFormatError = object of TimespanError"><wbr />Timespan<wbr />Invalid<wbr />Format<wbr />Error<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#Timespan"
     title="Timespan = distinct int64"><wbr />Timespan<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#Timestamp"
@@ -148,7 +154,9 @@ function main() {
   <li><a class="reference" href="#%2A%2CT%2CTimespan"
     title="`*`[T: SomeInteger](n: T; span: Timespan): Timespan"><wbr />`*`<span class="attachedType">Timespan</span></a></li>
   <li><a class="reference" href="#div%2CTimespan%2CT"
-    title="`div`[T: SomeInteger](span: Timespan; n: T)"><wbr />`div`<span class="attachedType">Timespan</span></a></li>
+    title="`div`[T: SomeInteger](span: Timespan; n: T): Timespan"><wbr />`div`<span class="attachedType">Timespan</span></a></li>
+  <li><a class="reference" href="#div%2CTimespan%2CTimespan"
+    title="`div`(a, b: Timespan): int64"><wbr />`div`<span class="attachedType">Timespan</span></a></li>
   <li><a class="reference" href="#%2B%2CTimespan%2CTimespan"
     title="`+`(a, b: Timespan): Timespan"><wbr />`+`<span class="attachedType">Timespan</span></a></li>
   <li><a class="reference" href="#-%2CTimespan%2CTimespan"
@@ -226,6 +234,10 @@ function main() {
     title="toTimestamp(t: Time): Timestamp"><wbr />to<wbr />Timestamp<span class="attachedType">Timestamp</span></a></li>
   <li><a class="reference" href="#toTimestamp%2CDateTime"
     title="toTimestamp(t: DateTime): Timestamp"><wbr />to<wbr />Timestamp<span class="attachedType">Timestamp</span></a></li>
+  <li><a class="reference" href="#%24%2CTimespan"
+    title="`$`(t: Timespan): string"><wbr />`$`<span class="attachedType">Timespan</span></a></li>
+  <li><a class="reference" href="#parseTimespan%2Cstring"
+    title="parseTimespan(s: string): Timespan"><wbr />parse<wbr />Timespan<span class="attachedType">Timespan</span></a></li>
 
   </ul>
 </li>
@@ -240,15 +252,36 @@ function main() {
   <div class="section" id="7">
 <h1><a class="toc-backref" href="#7">Types</a></h1>
 <dl class="item">
-<a id="TimestampInvalidFormatException"></a>
-<dt><pre><a href="timestamp.html#TimestampInvalidFormatException"><span class="Identifier">TimestampInvalidFormatException</span></a> <span class="Other">=</span> <span class="Keyword">object</span> <span class="Keyword">of</span> <span class="Identifier">TimestampException</span></pre></dt>
+<a id="TimestampError"></a>
+<dt><pre><a href="timestamp.html#TimestampError"><span class="Identifier">TimestampError</span></a> <span class="Other">=</span> <span class="Keyword">object</span> <span class="Keyword">of</span> <span class="Identifier">CatchableError</span></pre></dt>
 <dd>
 
 
 
 </dd>
-<a id="TimestampOutOfRangeException"></a>
-<dt><pre><a href="timestamp.html#TimestampOutOfRangeException"><span class="Identifier">TimestampOutOfRangeException</span></a> <span class="Other">=</span> <span class="Keyword">object</span> <span class="Keyword">of</span> <span class="Identifier">TimestampException</span></pre></dt>
+<a id="TimestampInvalidFormatError"></a>
+<dt><pre><a href="timestamp.html#TimestampInvalidFormatError"><span class="Identifier">TimestampInvalidFormatError</span></a> <span class="Other">=</span> <span class="Keyword">object</span> <span class="Keyword">of</span> <a href="timestamp.html#TimestampError"><span class="Identifier">TimestampError</span></a></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="TimestampOutOfRangeError"></a>
+<dt><pre><a href="timestamp.html#TimestampOutOfRangeError"><span class="Identifier">TimestampOutOfRangeError</span></a> <span class="Other">=</span> <span class="Keyword">object</span> <span class="Keyword">of</span> <a href="timestamp.html#TimestampError"><span class="Identifier">TimestampError</span></a></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="TimespanError"></a>
+<dt><pre><a href="timestamp.html#TimespanError"><span class="Identifier">TimespanError</span></a> <span class="Other">=</span> <span class="Keyword">object</span> <span class="Keyword">of</span> <span class="Identifier">CatchableError</span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="TimespanInvalidFormatError"></a>
+<dt><pre><a href="timestamp.html#TimespanInvalidFormatError"><span class="Identifier">TimespanInvalidFormatError</span></a> <span class="Other">=</span> <span class="Keyword">object</span> <span class="Keyword">of</span> <a href="timestamp.html#TimespanError"><span class="Identifier">TimespanError</span></a></pre></dt>
 <dd>
 
 
@@ -372,7 +405,14 @@ Convert to number of nano-second since epoch time in int64
 
 </dd>
 <a id="div,Timespan,T"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#div%2CTimespan%2CT"><span class="Identifier">`div`</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">:</span> <span class="Identifier">SomeInteger</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">span</span><span class="Other">:</span> <a href="timestamp.html#Timespan"><span class="Identifier">Timespan</span></a><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">inline</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#div%2CTimespan%2CT"><span class="Identifier">`div`</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">:</span> <span class="Identifier">SomeInteger</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">span</span><span class="Other">:</span> <a href="timestamp.html#Timespan"><span class="Identifier">Timespan</span></a><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span><span class="Other">:</span> <a href="timestamp.html#Timespan"><span class="Identifier">Timespan</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">inline</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="div,Timespan,Timespan"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#div%2CTimespan%2CTimespan"><span class="Identifier">`div`</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">,</span> <span class="Identifier">b</span><span class="Other">:</span> <a href="timestamp.html#Timespan"><span class="Identifier">Timespan</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int64</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">inline</span><span class="Other">,</span> <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -428,14 +468,14 @@ Convert to number of nano-second since epoch time in int64
 
 </dd>
 <a id="systemRealTime"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#systemRealTime"><span class="Identifier">systemRealTime</span></a><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">TimestampException</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#systemRealTime"><span class="Identifier">systemRealTime</span></a><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">TimestampError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 create a timestamp with current system time
 
 </dd>
 <a id="initTimestamp"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#initTimestamp"><span class="Identifier">initTimestamp</span></a><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">inline</span><span class="Other">,</span> <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">TimestampException</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#initTimestamp"><span class="Identifier">initTimestamp</span></a><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">inline</span><span class="Other">,</span> <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">TimestampError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -563,8 +603,8 @@ Convert Timestamp to string
 
 </dd>
 <a id="parseZulu,string"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#parseZulu%2Cstring"><span class="Identifier">parseZulu</span></a><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">TimestampInvalidFormatException</span><span class="Other">,</span>
-    <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">TimestampOutOfRangeException</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#parseZulu%2Cstring"><span class="Identifier">parseZulu</span></a><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">TimestampInvalidFormatError</span><span class="Other">,</span>
+    <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">TimestampOutOfRangeError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 <p>The following format are supported.</p>
@@ -653,7 +693,22 @@ Convert Time to timestamp
 <dt><pre><span class="Keyword">proc</span> <a href="#toTimestamp%2CDateTime"><span class="Identifier">toTimestamp</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <span class="Identifier">DateTime</span><span class="Other">)</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Convert DateTime to Timestamp can use between
+Convert DateTime to Timestamp
+
+</dd>
+<a id="$,Timespan"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#%24%2CTimespan"><span class="Identifier">`$`</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="timestamp.html#Timespan"><span class="Identifier">Timespan</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
+<a id="parseTimespan,string"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#parseTimespan%2Cstring"><span class="Identifier">parseTimespan</span></a><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="timestamp.html#Timespan"><span class="Identifier">Timespan</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">TimespanInvalidFormatError</span><span class="Other">]</span><span class="Other">,</span>
+                                      <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
 
 </dd>
 
@@ -666,7 +721,7 @@ Convert DateTime to Timestamp can use between
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-05-22 15:19:21 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-06-10 03:04:11 UTC</small>
       </div>
     </div>
   </div>
