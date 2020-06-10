@@ -26,9 +26,7 @@ There are two types, both are `int64` internally.
 `Timespan`: number of nano-second
 `Timestamp`: number of nano-second since epoch time
 
-### Construction 
-
-#### Constrution of Timestamp
+### Constrution of Timestamp
 
 ```nim
 # from system real time (now)
@@ -62,7 +60,7 @@ assert getTime().toTimestamp is Timestamp
 assert now().toTimestamp is Timestamp
 ```
 
-#### Construction of Timespan
+### Construction of Timespan
 
 ```nim
 # from basis
@@ -70,9 +68,13 @@ assert SECOND == 1000 * MILLI_SECOND
 assert MICRO_SECOND == 1000 * NANO_SECOND
 assert 2 * DAY == 40 * HOUR + 480 * MINUTE
 
-
 # from int64
-assert Timestamp(1_000_000_000) == SECOND
+assert Timespan(1_000_000_000) == SECOND
+
+# from string
+assert parseTimespan("1d") == DAY
+assert parseTimespan("1d3h") == DAY + 3*HOUR
+assert parseTimespan("-23h") == HOUR - DAY
 ```
 
 ### Operation 

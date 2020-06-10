@@ -6,9 +6,12 @@ elif defined(windows):
   
 # nano second since epoch time in GMT
 type
-  TimestampException = object of CatchableError
-  TimestampInvalidFormatException* = object of TimestampException
-  TimestampOutOfRangeException* = object of TimestampException
+  TimestampError* = object of CatchableError
+  TimestampInvalidFormatError* = object of TimestampError
+  TimestampOutOfRangeError* = object of TimestampError
+  TimespanError* = object of CatchableError
+  TimespanInvalidFormatError* = object of TimespanError
+
   Timespan* = distinct int64
   Timestamp* = object
     self: int64
@@ -24,7 +27,8 @@ proc `==`*(a,b: Timespan): bool {.borrow.}
 proc `<`*(a,b: Timespan): bool {.borrow.}
 proc `<=`*(a,b: Timespan): bool {.borrow.}
 proc `*`*[T: SomeInteger](n: T, span: Timespan): Timespan {.inline.} = Timespan(n.int64 * span.int64)
-proc `div`*[T: SomeInteger](span: Timespan, n: T) {.inline.} = Timespan(span.int64 div n.int64)
+proc `div`*[T: SomeInteger](span: Timespan, n: T): Timespan {.inline.} = Timespan(span.int64 div n.int64)
+proc `div`*(a,b: Timespan): int64 {.inline.} = a.int64 div b.int64
 proc `+`*(a, b: Timespan): Timespan {.inline.} = Timespan(a.int64 + b.int64)
 proc `-`*(a, b: Timespan): Timespan {.inline.} = Timespan(a.int64 - b.int64)
 let NANO_SECOND* = 1.Timespan
@@ -46,7 +50,7 @@ proc systemRealTime*(): Timestamp =
   when defined(posix):
     var ts: Timespec
     let success = clock_gettime(CLOCK_REALTIME, ts)
-    if success != 0: raise newException(TimestampException, "clock_gettime failed")
+    if success != 0: raise newException(TimestampError, "clock_gettime failed")
     result = Timestamp(self: ts.tv_sec.int64 * 1_000_000_000 + ts.tv_nsec.int64)
   elif defined(windows):
     var f: FILETIME
@@ -172,16 +176,16 @@ proc parseZulu*(s: string): Timestamp =
   template checkIsDigit(i,j) =
     for k in i..j:
       if not isDigit(s[k]): 
-        raise newException(TimestampInvalidFormatException, "Invalid format: position " & $k & " is not a digit: " & s)
+        raise newException(TimestampInvalidFormatError, "Invalid format: position " & $k & " is not a digit: " & s)
 
   template checkChar(i, c) =
     if s[i] != c: 
-      raise newException(TimestampInvalidFormatException, "Invalid format: position " & $i & " is not equal to " & c & ": " & s)
+      raise newException(TimestampInvalidFormatError, "Invalid format: position " & $i & " is not equal to " & c & ": " & s)
 
   if s.len < 20: 
-    raise newException(TimestampInvalidFormatException, "Invalid format: too short: " & s)
+    raise newException(TimestampInvalidFormatError, "Invalid format: too short: " & s)
   if s.len > 30:
-    raise newException(TimestampInvalidFormatException, "Invalid format: too long: " & s)
+    raise newException(TimestampInvalidFormatError, "Invalid format: too long: " & s)
   checkIsDigit(0,3)
   checkChar(4,'-')
   checkIsDigit(5,6)
@@ -195,15 +199,15 @@ proc parseZulu*(s: string): Timestamp =
   if s.len > 20: 
     checkChar(19, '.')
     checkIsDigit(20,s.len-2)
-  if s[^1] != 'Z': raise newException(TimestampInvalidFormatException, "Invalid format: missing Z: " & s)
+  if s[^1] != 'Z': raise newException(TimestampInvalidFormatError, "Invalid format: missing Z: " & s)
 
   # http://howardhinnant.github.io/date_algorithms.html#civil_from_days
   var t: int64 = 0
   var y: int64 = parseInt(s[0..3])
   # int64.high.Time.zulu == 2262-04-11T23:47:16.854Z
-  if y > 2262: raise newException(TimestampOutOfRangeException, "Time out of range: " & s)
+  if y > 2262: raise newException(TimestampOutOfRangeError, "Time out of range: " & s)
   # int64.low.Time.zulu == 1677-09-21T00:12:43.145Z
-  if y < 1678: raise newException(TimestampOutOfRangeException, "Time out of range: " & s)
+  if y < 1678: raise newException(TimestampOutOfRangeError, "Time out of range: " & s)
 
   var m: int64 = parseInt(s[5..6])
   var d: int64 = parseInt(s[8..9])
@@ -259,5 +263,73 @@ proc toTimestamp*(t: Time): Timestamp =
 
 proc toTimestamp*(t: DateTime): Timestamp =
   ## Convert DateTime to Timestamp
-  ## can use between
   t.toTime().toTimestamp()
+
+proc `$`*(t: Timespan): string =
+  if t.i64 < 0: 
+    return '-' & $Timespan(-t.i64)
+  if t.i64 == 0:
+    return "0"
+
+  var n = t
+  template run(unit, name: untyped) = 
+    if t >= `unit`:
+      let x = n div `unit`
+      n = n - x*unit
+      if x != 0:
+        result &= $x & `name`
+      
+  run(DAY, "d")
+  run(HOUR, "h")
+  run(MINUTE, "m")
+  run(SECOND, "s")
+  run(MILLI_SECOND, "ms")
+  run(MICRO_SECOND, "us")
+  run(NANO_SECOND, "ns")
+
+proc parseTimespan*(s: string): Timespan =
+  if s == "0":
+    return Timespan(0)
+  if s[0] == '-':
+    let t = parseTimespan(s[1..s.len-1])
+    return Timespan(-t.i64)
+  
+  result = Timespan(0)
+  var n: int64 = 0
+  var i = 0
+
+  template read(i: untyped): untyped =
+    if i >= s.len: '\0'
+    else: s[i]
+  template add(t: untyped): untyped =
+    result = result + n * `t`
+    n = 0
+  template addAndMove(t: untyped): untyped =
+    result = result + n * `t`
+    n = 0
+    i += 1
+
+  while i < s.len:
+    let c = s[i]
+    case c:
+    of '0'..'9':
+      n = 10*n + c.ord.int64 - 48
+    of 'd': add(DAY)
+    of 'h': add(HOUR)
+    of 's': add(SECOND)
+    of 'm':
+      let c1 = read(i+1)
+      if c1 == 's': addAndMove(MILLI_SECOND)
+      elif c1 == '\0' or isDigit(c1): add(MINUTE)
+      else: raise newException(TimespanInvalidFormatError, "invalid format: " & s)
+    of 'u':
+      let c1 = read(i+1)
+      if c1 == 's': addAndMove(MICRO_SECOND)
+      else: raise newException(TimespanInvalidFormatError, "invalid format: " & s)
+    of 'n':
+      let c1 = read(i+1)
+      if c1 == 's': addAndMove(NANO_SECOND)
+      else: raise newException(TimespanInvalidFormatError, "invalid format: " & s)
+    else:
+      raise newException(TimespanInvalidFormatError, "invalid format: " & s)
+    i += 1

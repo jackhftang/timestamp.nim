@@ -1,6 +1,36 @@
 import unittest, asyncdispatch, times, random
 import timestamp
 
+suite "timespan":
+
+  test "$":
+    check: $DAY == "1d"
+    check: $HOUR == "1h"
+    check: $MINUTE == "1m"
+    check: $SECOND == "1s"
+    check: $MILLI_SECOND == "1ms"
+    check: $MICRO_SECOND == "1us"
+    check: $NANO_SECOND == "1ns"
+    check: $(DAY + 3*HOUR) == "1d3h"
+    check: $(DAY + 3*HOUR - 30*MINUTE) == "1d2h30m"
+    check: $(DAY - DAY) == "0"
+    check: $(HOUR - DAY) == "-23h"
+    check: $(HOUR + 30*MINUTE - DAY) == "-22h30m"
+
+  test "parseTimespan":
+    check: parseTimespan("1d") == DAY
+    check: parseTimespan("1h") == HOUR
+    check: parseTimespan("1m") == MINUTE
+    check: parseTimespan("1s") == SECOND
+    check: parseTimespan("1ms") == MILLI_SECOND
+    check: parseTimespan("1us") == MICRO_SECOND
+    check: parseTimespan("1ns") == NANO_SECOND
+    check: parseTimespan("1d3h") == DAY + 3*HOUR
+    check: parseTimespan("1d2h30m") == DAY + 2*HOUR + 30*MINUTE
+    check: parseTimespan("0") == Timespan(0)
+    check: parseTimespan("-23h") == HOUR - DAY
+    check: parseTimespan("-22h30m") == HOUR + 30*MINUTE - DAY
+
 suite "timestamp":
 
   test "sizeof(Timestamp)":
@@ -60,6 +90,19 @@ suite "timestamp":
     check: parseZulu("1970-01-01T00:00:00.123456Z") == initTimestamp(123456000)
     check: parseZulu("1970-01-01T00:00:00.123456789Z") == initTimestamp(123456789)
     
+  test "$":
+    let t = initTimestamp(0)
+    check: $(t + DAY) == "1970-01-02T00:00:00.000000000Z"
+    check: $(t + HOUR) == "1970-01-01T01:00:00.000000000Z"
+    check: $(t + MINUTE) == "1970-01-01T00:01:00.000000000Z"
+    check: $(t + SECOND) == "1970-01-01T00:00:01.000000000Z"
+    check: $(t + MILLI_SECOND) == "1970-01-01T00:00:00.001000000Z"
+    check: $(t + MICRO_SECOND) == "1970-01-01T00:00:00.000001000Z"
+    check: $(t + NANO_SECOND) == "1970-01-01T00:00:00.000000001Z"
+    check: $(t - NANO_SECOND) == "1969-12-31T23:59:59.999999999Z"
+    check: $(t + 1*NANO_SECOND) == "1970-01-01T00:00:00.000000001Z"
+    check: $(t + 5*MINUTE + 30*SECOND) == "1970-01-01T00:05:30.000000000Z"
+
   test "special timepoint":
     check: $initTimestamp(0) == "1970-01-01T00:00:00.000000000Z"
     check: $initTimestamp(-1) == "1969-12-31T23:59:59.999999999Z"
@@ -142,6 +185,19 @@ suite "timestamp":
 
       assert getTime().toTimestamp is Timestamp
       assert now().toTimestamp is Timestamp
+
+      # from basis
+      assert SECOND == 1000 * MILLI_SECOND
+      assert MICRO_SECOND == 1000 * NANO_SECOND
+      assert 2 * DAY == 40 * HOUR + 480 * MINUTE
+
+      # from int64
+      assert Timespan(1_000_000_000) == SECOND
+
+      # from string
+      assert parseTimespan("1d") == DAY
+      assert parseTimespan("1d3h") == DAY + 3*HOUR
+      assert parseTimespan("-23h") == HOUR - DAY
 
     block:
       assert SECOND == 1000 * MILLI_SECOND
