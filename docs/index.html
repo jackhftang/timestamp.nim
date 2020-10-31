@@ -191,21 +191,25 @@ function main() {
   <li><a class="reference" href="#daySinceEpoch%2CTimestamp"
     title="daySinceEpoch(t: Timestamp): int64"><wbr />day<wbr />Since<wbr />Epoch<span class="attachedType">Timestamp</span></a></li>
   <li><a class="reference" href="#nanoSecond%2CTimestamp"
-    title="nanoSecond(t: Timestamp): int64"><wbr />nano<wbr />Second<span class="attachedType">Timestamp</span></a></li>
+    title="nanoSecond(t: Timestamp): int"><wbr />nano<wbr />Second<span class="attachedType">Timestamp</span></a></li>
   <li><a class="reference" href="#microSecond%2CTimestamp"
-    title="microSecond(t: Timestamp): int64"><wbr />micro<wbr />Second<span class="attachedType">Timestamp</span></a></li>
+    title="microSecond(t: Timestamp): int"><wbr />micro<wbr />Second<span class="attachedType">Timestamp</span></a></li>
   <li><a class="reference" href="#milliSecond%2CTimestamp"
-    title="milliSecond(t: Timestamp): int64"><wbr />milli<wbr />Second<span class="attachedType">Timestamp</span></a></li>
+    title="milliSecond(t: Timestamp): int"><wbr />milli<wbr />Second<span class="attachedType">Timestamp</span></a></li>
   <li><a class="reference" href="#second%2CTimestamp"
-    title="second(t: Timestamp): int64"><wbr />second<span class="attachedType">Timestamp</span></a></li>
+    title="second(t: Timestamp): int"><wbr />second<span class="attachedType">Timestamp</span></a></li>
   <li><a class="reference" href="#minute%2CTimestamp"
-    title="minute(t: Timestamp): int64"><wbr />minute<span class="attachedType">Timestamp</span></a></li>
+    title="minute(t: Timestamp): int"><wbr />minute<span class="attachedType">Timestamp</span></a></li>
   <li><a class="reference" href="#hour%2CTimestamp"
-    title="hour(t: Timestamp): int64"><wbr />hour<span class="attachedType">Timestamp</span></a></li>
+    title="hour(t: Timestamp): int"><wbr />hour<span class="attachedType">Timestamp</span></a></li>
   <li><a class="reference" href="#subSecond%2CTimestamp"
-    title="subSecond(t: Timestamp): int64"><wbr />sub<wbr />Second<span class="attachedType">Timestamp</span></a></li>
+    title="subSecond(t: Timestamp): int"><wbr />sub<wbr />Second<span class="attachedType">Timestamp</span></a></li>
   <li><a class="reference" href="#yearMonthDay%2CTimestamp"
     title="yearMonthDay(t: Timestamp): tuple[year: int, month: int, day: int]"><wbr />year<wbr />Month<wbr />Day<span class="attachedType">Timestamp</span></a></li>
+  <li><a class="reference" href="#addMonth%2CTimestamp%2Cint"
+    title="addMonth(a: Timestamp; m: int): Timestamp"><wbr />add<wbr />Month<span class="attachedType">Timestamp</span></a></li>
+  <li><a class="reference" href="#addYear%2CTimestamp%2Cint"
+    title="addYear(a: Timestamp; y: int): Timestamp"><wbr />add<wbr />Year<span class="attachedType">Timestamp</span></a></li>
   <li><a class="reference" href="#zulu%2CTimestamp"
     title="zulu(t: Timestamp): string"><wbr />zulu<span class="attachedType">Timestamp</span></a></li>
   <li><a class="reference" href="#%24%2CTimestamp"
@@ -532,49 +536,49 @@ create a timestamp with normal written units
 
 </dd>
 <a id="nanoSecond,Timestamp"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#nanoSecond%2CTimestamp"><span class="Identifier">nanoSecond</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int64</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#nanoSecond%2CTimestamp"><span class="Identifier">nanoSecond</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Extract nano-second in zulu time, range from 0~999
 
 </dd>
 <a id="microSecond,Timestamp"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#microSecond%2CTimestamp"><span class="Identifier">microSecond</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int64</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#microSecond%2CTimestamp"><span class="Identifier">microSecond</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Extract micro-second in zulu time, range from 0~999
 
 </dd>
 <a id="milliSecond,Timestamp"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#milliSecond%2CTimestamp"><span class="Identifier">milliSecond</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int64</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#milliSecond%2CTimestamp"><span class="Identifier">milliSecond</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Extract milli-second in zulu time, range from 0~999
 
 </dd>
 <a id="second,Timestamp"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#second%2CTimestamp"><span class="Identifier">second</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int64</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#second%2CTimestamp"><span class="Identifier">second</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Extract minute in zulu time.
 
 </dd>
 <a id="minute,Timestamp"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#minute%2CTimestamp"><span class="Identifier">minute</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int64</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#minute%2CTimestamp"><span class="Identifier">minute</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Extract hour in zulu time
 
 </dd>
 <a id="hour,Timestamp"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#hour%2CTimestamp"><span class="Identifier">hour</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int64</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#hour%2CTimestamp"><span class="Identifier">hour</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Extract day in zulu time
 
 </dd>
 <a id="subSecond,Timestamp"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#subSecond%2CTimestamp"><span class="Identifier">subSecond</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int64</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#subSecond%2CTimestamp"><span class="Identifier">subSecond</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Number of nano-second since last whole second
@@ -586,6 +590,20 @@ Number of nano-second since last whole second
 <dd>
 
 Convert Timestamp to calendar year month and day
+
+</dd>
+<a id="addMonth,Timestamp,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#addMonth%2CTimestamp%2Cint"><span class="Identifier">addMonth</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">;</span> <span class="Identifier">m</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Add <tt class="docutils literal"><span class="pre">m</span></tt> month to a. <tt class="docutils literal"><span class="pre">m</span></tt> could be negative
+
+</dd>
+<a id="addYear,Timestamp,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#addYear%2CTimestamp%2Cint"><span class="Identifier">addYear</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">;</span> <span class="Identifier">y</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
 
 </dd>
 <a id="zulu,Timestamp"></a>
@@ -721,7 +739,7 @@ Convert DateTime to Timestamp
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-06-10 03:04:11 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-10-31 13:58:35 UTC</small>
       </div>
     </div>
   </div>
