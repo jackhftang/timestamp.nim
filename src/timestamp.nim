@@ -95,30 +95,30 @@ proc `-`*(a,b: Timestamp): Timespan = Timespan(a.self - b.self)
 proc epoch*(t: Timestamp): float = t.self.float / 1_000_000_000.0
 proc daySinceEpoch*(t: Timestamp): int64 = floorDiv(t.self, DAY.int64).int64
 
-proc convert(t: Timestamp, d: Timespan, m: int64): int64 {.inline.} =
+proc convert(t: Timestamp, d: Timespan, m: int64): int {.inline.} =
   var n = floorDiv(t.self, d.int64) mod m
-  if n < 0: result = (n + m)
-  else: result = n
-proc nanoSecond*(t: Timestamp): int64 = 
+  if n < 0: result = int(n + m)
+  else: result = int(n)
+proc nanoSecond*(t: Timestamp): int = 
   ## Extract nano-second in zulu time, range from 0~999
   convert(t, NANO_SECOND, 1000)
-proc microSecond*(t: Timestamp): int64 = 
+proc microSecond*(t: Timestamp): int = 
   ## Extract micro-second in zulu time, range from 0~999
   convert(t, MICRO_SECOND, 1000)
-proc milliSecond*(t: Timestamp): int64 = 
+proc milliSecond*(t: Timestamp): int = 
   ## Extract milli-second in zulu time, range from 0~999
   convert(t, MILLI_SECOND, 1000)
-proc second*(t: Timestamp): int64 = 
+proc second*(t: Timestamp): int = 
   ## Extract minute in zulu time.
   convert(t, SECOND, 60)
-proc minute*(t: Timestamp): int64 = 
+proc minute*(t: Timestamp): int = 
   ## Extract hour in zulu time
   convert(t, MINUTE, 60)
-proc hour*(t: Timestamp): int64 = 
+proc hour*(t: Timestamp): int = 
   ## Extract day in zulu time
   convert(t, HOUR, 24)
 
-proc subSecond*(t: Timestamp): int64 = 
+proc subSecond*(t: Timestamp): int = 
   ## Number of nano-second since last whole second
   convert(t, NANO_SECOND, 1_000_000_000)
 
@@ -136,6 +136,15 @@ proc yearMonthDay*(t: Timestamp): tuple[year: int, month: int, day: int] =
   let d = doy - (153 * mp + 2) div 5 + 1
   let m = mp + (if mp < 10: 3 else: -9)
   return ((y + ord(m <= 2)).int, m.int, d.int)
+
+proc addMonth*(a: Timestamp, m: int): Timestamp =
+  ## Add `m` month to a. `m` could be negative
+  let (year, month, day) = a.yearMonthDay
+  initTimestamp(year, month + m, day, a.hour, a.minute, a.second, a.milliSecond, a.microSecond, a.nanoSecond)
+
+proc addYear*(a: Timestamp, y: int): Timestamp =
+  let (year, month, day) = a.yearMonthDay
+  initTimestamp(year + y, month, day, a.hour, a.minute, a.second, a.milliSecond, a.microSecond, a.nanoSecond)
 
 proc zulu*(t: Timestamp): string =
   ## Convert timestamp to string with milli-second precision

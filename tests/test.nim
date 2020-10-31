@@ -58,6 +58,25 @@ suite "timestamp":
     check: initTimestamp(123_123_123_123_000).minute == 12
     check: initTimestamp(123_123_123_123_000).hour == 10
 
+  test "addMonth":
+    let t = initTimestamp(2001,2,3,4,5,6,7,8,9) 
+    check: $t == "2001-02-03T04:05:06.007008009Z"
+    check: $t.addMonth(-2) == "2000-12-03T04:05:06.007008009Z"
+    check: $t.addMonth(-1) == "2001-01-03T04:05:06.007008009Z"
+    check: $t.addMonth(0) == "2001-02-03T04:05:06.007008009Z"
+    check: $t.addMonth(1) == "2001-03-03T04:05:06.007008009Z"
+    check: $t.addMonth(2) == "2001-04-03T04:05:06.007008009Z"
+    check: $t.addMonth(10) == "2001-12-03T04:05:06.007008009Z"
+    check: $t.addMonth(11) == "2002-01-03T04:05:06.007008009Z"
+
+  test "addYear":
+    let t = initTimestamp(2001,2,3,4,5,6,7,8,9) 
+    check: $t == "2001-02-03T04:05:06.007008009Z"
+    check: $t.addYear(-100) == "1901-02-03T04:05:06.007008009Z"
+    check: $t.addYear(-1) == "2000-02-03T04:05:06.007008009Z"
+    check: $t.addYear(1) == "2002-02-03T04:05:06.007008009Z"
+    check: $t.addYear(100) == "2101-02-03T04:05:06.007008009Z"
+
   test "zulu":
     check: initTimestamp(0).zulu == "1970-01-01T00:00:00.000Z"
     check: initTimestamp(123_123_123_123_000).zulu == "1970-01-02T10:12:03.123Z"
@@ -164,13 +183,13 @@ suite "timestamp":
 
   test "inXXX":
     let s1 = Timespan(1_000_000_000)
-    assert s1.inNanoSecond == 1e9
-    assert s1.inMicroSecond == 1e6
-    assert s1.inMilliSecond == 1e3
-    assert s1.inSecond == 1.0
+    check: s1.inNanoSecond == 1e9
+    check: s1.inMicroSecond == 1e6
+    check: s1.inMilliSecond == 1e3
+    check: s1.inSecond == 1.0
 
     let s2 = Timespan(60_000_000_000)
-    assert s2.inMinute == 1.0
+    check: s2.inMinute == 1.0
 
   test "example on readme":
     block:
@@ -216,6 +235,8 @@ suite "timestamp":
       
       assert $(t + 1*NANO_SECOND) == "1970-01-01T00:00:00.000000001Z"
       assert $(t + 5*MINUTE + 30*SECOND) == "1970-01-01T00:05:30.000000000Z"
+      assert $(t.addMonth(1)) == "1970-02-01T00:00:00.000000000Z"
+      assert $(t.addYear(1)) == "1971-01-01T00:00:00.000000000Z"
 
       let t2 = t + DAY 
       assert t2 - t == 86400 * SECOND

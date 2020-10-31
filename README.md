@@ -92,6 +92,8 @@ assert $(t + MICRO_SECOND) == "1970-01-01T00:00:00.000001000Z"
 assert $(t + NANO_SECOND) == "1970-01-01T00:00:00.000000001Z"
 assert $(t - NANO_SECOND) == "1969-12-31T23:59:59.999999999Z"
 assert $(t + 5 * MINUTE) == "1970-01-01T00:00:05.000000000Z"
+assert $(t.addMonth(1)) == "1970-02-01T00:00:00.000000000Z"
+assert $(t.addYear(1)) == "1971-01-01T00:00:00.000000000Z"
 
 # substraction between two timestamps return Timespan
 let t2 = t + DAY 
@@ -113,7 +115,7 @@ assert min(a,b) == a
 
 ```nim
 let t = initTimestamp(2001,2,3,4,5,6,7,8,9)
-assert t.yearMonthday == (2001,2,3)
+assert t.yearMonthDay == (2001,2,3)
 assert t.hour == 4
 assert t.minute == 5
 assert t.second == 6
