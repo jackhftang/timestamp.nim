@@ -210,6 +210,9 @@ function main() {
     title="addMonth(a: Timestamp; m: int): Timestamp"><wbr />add<wbr />Month<span class="attachedType">Timestamp</span></a></li>
   <li><a class="reference" href="#addYear%2CTimestamp%2Cint"
     title="addYear(a: Timestamp; y: int): Timestamp"><wbr />add<wbr />Year<span class="attachedType">Timestamp</span></a></li>
+  <li><a class="reference" href="#add%2CTimestamp%2Cint%2Cint%2Cint%2Cint%2Cint%2Cint%2Cint%2Cint%2Cint"
+    title="add(a: Timestamp; year: int = 0; month: int = 0; day: int = 0; hour: int = 0; minute: int = 0;
+    second: int = 0; millisecond: int = 0; microsecond: int = 0; nanosecond: int = 0): Timestamp"><wbr />add<span class="attachedType">Timestamp</span></a></li>
   <li><a class="reference" href="#zulu%2CTimestamp"
     title="zulu(t: Timestamp): string"><wbr />zulu<span class="attachedType">Timestamp</span></a></li>
   <li><a class="reference" href="#%24%2CTimestamp"
@@ -606,6 +609,15 @@ Add <tt class="docutils literal"><span class="pre">m</span></tt> month to a. <tt
 
 
 </dd>
+<a id="add,Timestamp,int,int,int,int,int,int,int,int,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#add%2CTimestamp%2Cint%2Cint%2Cint%2Cint%2Cint%2Cint%2Cint%2Cint%2Cint"><span class="Identifier">add</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">;</span> <span class="Identifier">year</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">;</span> <span class="Identifier">month</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">;</span> <span class="Identifier">day</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">;</span> <span class="Identifier">hour</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">;</span> <span class="Identifier">minute</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">;</span>
+        <span class="Identifier">second</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">;</span> <span class="Identifier">millisecond</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">;</span> <span class="Identifier">microsecond</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">;</span> <span class="Identifier">nanosecond</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">)</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+    <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+
+</dd>
 <a id="zulu,Timestamp"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#zulu%2CTimestamp"><span class="Identifier">zulu</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="timestamp.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
@@ -739,7 +751,7 @@ Convert DateTime to Timestamp
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2020-10-31 13:58:35 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2020-11-02 02:43:40 UTC</small>
       </div>
     </div>
   </div>
