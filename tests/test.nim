@@ -77,6 +77,20 @@ suite "timestamp":
     check: $t.addYear(1) == "2002-02-03T04:05:06.007008009Z"
     check: $t.addYear(100) == "2101-02-03T04:05:06.007008009Z"
 
+  test "add":
+    let t = initTimestamp(2001,2,3,4,5,6,7,8,9)
+    check: $t == "2001-02-03T04:05:06.007008009Z"
+    check: $t.add(year=1) == "2002-02-03T04:05:06.007008009Z"
+    check: $t.add(month=1) == "2001-03-03T04:05:06.007008009Z"
+    check: $t.add(day=1) == "2001-02-04T04:05:06.007008009Z"
+    check: $t.add(hour=1) == "2001-02-03T05:05:06.007008009Z"
+    check: $t.add(minute=1) == "2001-02-03T04:06:06.007008009Z"
+    check: $t.add(second=1) == "2001-02-03T04:05:07.007008009Z"
+    check: $t.add(millisecond=1) == "2001-02-03T04:05:06.008008009Z"
+    check: $t.add(microsecond=1) == "2001-02-03T04:05:06.007009009Z"
+    check: $t.add(nanosecond=1) == "2001-02-03T04:05:06.007008010Z"
+    check: $t.add(-1,-1,-1,-1,-1,-1,-1,-1,-1) == "2000-01-02T03:04:05.006007008Z"
+
   test "zulu":
     check: initTimestamp(0).zulu == "1970-01-01T00:00:00.000Z"
     check: initTimestamp(123_123_123_123_000).zulu == "1970-01-02T10:12:03.123Z"
